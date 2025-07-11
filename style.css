@@ -1,0 +1,324 @@
+body {
+    font-family: 'Tahoma', sans-serif; /* فونت مناسب فارسی */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* ترازبندی از بالا برای نمایش بهتر مودال */
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    margin: 20px;
+    direction: rtl; /* جهت نمایش راست به چپ برای زبان فارسی */
+    box-sizing: border-box; /* اطمینان از محاسبات صحیح اندازه باکس‌ها */
+}
+
+/* برای دستگاه‌های موبایل، حاشیه‌ها رو کمتر می‌کنیم */
+@media (max-width: 768px) {
+    body {
+        margin: 10px;
+    }
+}
+
+.calendar-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box; /* اطمینان از محاسبات صحیح اندازه باکس‌ها */
+}
+
+/* در اندازه‌های کوچکتر، پدینگ رو کمتر می‌کنیم */
+@media (max-width: 768px) {
+    .calendar-container {
+        padding: 15px;
+    }
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* اجازه می‌دهیم دکمه‌ها و عنوان در صورت نیاز به خط بعدی بروند */
+    text-align: center;
+}
+
+.calendar-header button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin: 5px; /* برای جلوگیری از چسبیدن دکمه‌ها به هم در حالت رپ */
+}
+
+.calendar-header button:hover {
+    background-color: #0056b3;
+}
+
+.calendar-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+    flex-grow: 1; /* اجازه می‌دهد عنوان فضای بیشتری اشغال کند */
+    padding: 5px 0;
+}
+
+/* برای موبایل، اندازه عنوان رو کمی کوچکتر می‌کنیم */
+@media (max-width: 768px) {
+    .calendar-header h2 {
+        font-size: 1.3em;
+        width: 100%; /* عنوان تمام عرض رو بگیره */
+    }
+    .calendar-header button {
+        flex-grow: 1; /* دکمه‌ها تمام عرض موجود رو بگیرن */
+    }
+}
+
+
+.calendar-grid-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555;
+    background-color: #e9ecef;
+    padding: 10px 0;
+    border-radius: 5px;
+    font-size: 0.9em; /* کمی کوچکتر کردن فونت برای سربرگ */
+}
+
+/* در موبایل، فونت سربرگ رو کوچکتر می‌کنیم */
+@media (max-width: 768px) {
+    .calendar-grid-header {
+        font-size: 0.8em;
+    }
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    padding: 15px 5px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    min-height: 80px; /* حداقل ارتفاع برای یکنواختی اندازه مربع‌های روز */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    font-weight: bold;
+    color: #444;
+    font-size: 1.1em; /* فونت کمی بزرگتر برای خوانایی بهتر */
+}
+
+/* در موبایل، پدینگ روزها رو کمتر و فونت رو کمی کوچکتر می‌کنیم */
+@media (max-width: 768px) {
+    .calendar-day {
+        padding: 10px 3px;
+        min-height: 60px; /* ارتفاع کمتر در موبایل */
+        font-size: 1em;
+    }
+}
+
+
+.calendar-day:hover {
+    background-color: #e9e9e9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-day.current-day {
+    background-color: #d1ecf1; /* رنگ برای روز جاری */
+    border-color: #bee5eb;
+    font-weight: bold;
+    color: #0c5460;
+}
+
+.calendar-day.has-appointments {
+    background-color: #d4edda; /* سبز روشن برای روزهای دارای نوبت */
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.calendar-day.other-month {
+    color: #ccc;
+    background-color: #fafafa;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Modal styles - استایل‌های پنجره مودال */
+.modal {
+    display: none; /* به طور پیش‌فرض پنهان */
+    position: fixed; /* در جای خود ثابت بماند */
+    z-index: 1000; /* روی بقیه عناصر قرار گیرد */
+    left: 0;
+    top: 0;
+    width: 100%; /* عرض کامل */
+    height: 100%; /* ارتفاع کامل */
+    overflow: auto; /* فعال کردن اسکرول در صورت نیاز */
+    background-color: rgba(0,0,0,0.6); /* پس‌زمینه نیمه شفاف و کمی تیره‌تر */
+    justify-content: center;
+    align-items: center;
+    padding: 10px; /* پدینگ برای جلوگیری از چسبیدن مودال به لبه‌ها در موبایل */
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto; /* برای مرکزیت در مودال فلکس‌باکس */
+    padding: 30px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 90%; /* عرض ریسپانسیو */
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* سایه واضح‌تر */
+    box-sizing: border-box;
+}
+
+/* در موبایل، پدینگ مودال رو کمتر می‌کنیم */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 20px;
+        width: 95%; /* عرض بیشتر برای موبایل */
+        margin: 5% auto; /* کمی فاصله از بالا و پایین */
+    }
+}
+
+.close-button {
+    color: #aaa;
+    float: left; /* برای راست به چپ، دکمه بستن در سمت چپ */
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: absolute; /* برای موقعیت‌یابی دقیق */
+    top: 10px;
+    left: 15px; /* در سمت چپ بالا */
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #333;
+    text-decoration: none;
+}
+
+#modalDate {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 1.6em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    padding-top: 15px; /* برای جبران فضای دکمه بستن */
+}
+
+/* فونت تاریخ در موبایل */
+@media (max-width: 768px) {
+    #modalDate {
+        font-size: 1.4em;
+        margin-bottom: 20px;
+    }
+}
+
+#timeSlots {
+    max-height: 350px; /* حداکثر ارتفاع بیشتر برای اسکرول‌پذیری */
+    overflow-y: auto; /* فعال کردن اسکرول عمودی */
+    margin-bottom: 20px;
+    padding-right: 10px; /* برای فضای اسکرول‌بار */
+    -webkit-overflow-scrolling: touch; /* اسکرول نرم‌تر در iOS */
+}
+
+.time-slot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    background-color: #fdfdfd;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    font-size: 1.1em; /* خوانایی بهتر */
+}
+
+.time-slot.booked {
+    background-color: #ffebeb; /* قرمز روشن برای نوبت‌های پر شده */
+    text-decoration: line-through; /* خط کشیدن روی متن */
+    color: #888;
+    border-color: #ffc2c2;
+    opacity: 0.8; /* کمی شفاف‌تر برای مشخص شدن پر بودن */
+}
+
+.time-slot label {
+    flex-grow: 1; /* اجازه می‌دهد لیبل فضای باقی‌مانده را پر کند */
+    cursor: pointer;
+    margin-right: 15px; /* فاصله بین چک باکس و متن */
+}
+
+.time-slot input[type="checkbox"] {
+    transform: scale(1.4); /* بزرگتر کردن چک‌باکس */
+    accent-color: #007bff; /* رنگ چک‌باکس */
+    min-width: 20px; /* حداقل عرض برای چک‌باکس */
+    min-height: 20px; /* حداقل ارتفاع برای چک‌باکس */
+}
+
+/* در موبایل، فونت اسلات‌ها و اندازه چک‌باکس رو کمی تنظیم می‌کنیم */
+@media (max-width: 768px) {
+    .time-slot {
+        padding: 10px 12px;
+        font-size: 1em;
+    }
+    .time-slot input[type="checkbox"] {
+        transform: scale(1.2);
+    }
+}
+
+#saveAppointments {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+#saveAppointments:hover {
+    background-color: #218838;
+}
+
+/* بهبود ظاهر اسکرول‌بار در وب‌کیت (کروم، سافاری) */
+#timeSlots::-webkit-scrollbar {
+    width: 8px;
+}
+
+#timeSlots::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#timeSlots::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+#timeSlots::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

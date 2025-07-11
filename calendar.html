@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقویم نوبت‌دهی شمسی</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button id="prevMonth">ماه قبل</button>
+            <h2 id="currentMonthYear"></h2>
+            <button id="nextMonth">ماه بعد</button>
+        </div>
+        <div class="calendar-grid-header">
+            <div>شنبه</div>
+            <div>یکشنبه</div>
+            <div>دوشنبه</div>
+            <div>سه‌شنبه</div>
+            <div>چهارشنبه</div>
+            <div>پنج‌شنبه</div>
+            <div>جمعه</div>
+        </div>
+        <div class="calendar-grid" id="calendarGrid">
+            </div>
+    </div>
+
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="modalDate"></h3>
+            <div id="timeSlots">
+                </div>
+            <button id="saveAppointments">ذخیره نوبت‌ها</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jalaali-js/dist/jalaali.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
