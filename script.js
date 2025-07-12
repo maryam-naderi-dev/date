@@ -62,6 +62,7 @@ const monthNames = [
 // تابع برای دریافت نوبت‌های ذخیره شده برای یک تاریخ خاص از Firestore
 // این تابع ناهمگام (async) است و یک Promise برمی‌گرداند.
 async function getAppointmentsFromFirestore(dateKey) {
+    console.log("Attempting to get appointments for:", dateKey); // برای دیباگ
     try {
         // یک ارجاع به داکیومنت خاص در کالکشن 'appointments' ایجاد می‌کنیم
         const docRef = doc(db, 'appointments', dateKey);
@@ -70,14 +71,15 @@ async function getAppointmentsFromFirestore(dateKey) {
 
         if (docSnap.exists()) {
             // اگر داکیومنت وجود داشت، داده‌های آن را برمی‌گردانیم
+            console.log("Appointments found:", docSnap.data()); // برای دیباگ
             return docSnap.data();
         } else {
             // اگر داکیومنت وجود نداشت (یعنی نوبتی برای این تاریخ ثبت نشده)، یک شیء خالی برمی‌گردانیم
-            console.log("No appointments for this date:", dateKey);
+            console.log("No appointments found for this date in Firestore:", dateKey); // برای دیباگ
             return {};
         }
     } catch (error) {
-        console.error("Error getting appointments:", error);
+        console.error("Error getting appointments from Firestore:", error); // برای دیباگ
         return {}; // در صورت خطا، یک شیء خالی برمی‌گردانیم
     }
 }
@@ -85,12 +87,13 @@ async function getAppointmentsFromFirestore(dateKey) {
 // تابع برای ذخیره نوبت‌ها برای یک تاریخ خاص در Firestore
 // این تابع نیز ناهمگام (async) است.
 async function saveAppointmentsToFirestore(dateKey, appointmentsData) {
+    console.log("Attempting to save appointments for:", dateKey, "Data:", appointmentsData); // برای دیباگ
     try {
         // داده‌های نوبت‌ها را در داکیومنت مربوط به آن تاریخ در کالکشن 'appointments' ذخیره (یا به‌روزرسانی) می‌کنیم
         await setDoc(doc(db, 'appointments', dateKey), appointmentsData);
-        console.log("Appointments saved successfully for:", dateKey);
+        console.log("Appointments saved successfully for:", dateKey); // برای دیباگ
     } catch (error) {
-        console.error("Error saving appointments:", error);
+        console.error("Error saving appointments to Firestore:", error); // برای دیباگ
     }
 }
 
